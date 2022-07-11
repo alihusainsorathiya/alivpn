@@ -11,6 +11,7 @@ import 'package:flag/flag_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:fast_csv/fast_csv.dart' as _fast_csv;
+import 'package:openvpn_flutter/openvpn_flutter.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -28,9 +29,32 @@ class _HomepageState extends State<Homepage> {
   final vpnList = <VPNModel>[];
   final sortedList = [];
   var widgetListtoPass = [];
+  OpenVPN engine = OpenVPN();
+  VpnStatus? status;
+  VPNStage? stage;
+  bool _granted = false;
   @override
   void initState() {
+    engine.initialize(
+      // groupIdentifier: "group.com.laskarmedia.vpn",
+      groupIdentifier: "com.example.alivpn",
+      providerBundleIdentifier:
+          "id.laskarmedia.openvpnFlutterExample.VPNExtension",
+      localizedDescription: "VPN by Ali",
+      lastStage: (stage) {
+        setState(() {
+          this.stage = stage;
+        });
+      },
+      lastStatus: (status) {
+        setState(() {
+          this.status = status;
+        });
+      },
+    );
+
     abc = getVPNServers();
+
     super.initState();
   }
 
@@ -58,9 +82,6 @@ class _HomepageState extends State<Homepage> {
   }
 
   getVPNServers() async {
-    // Response response =
-    //     await ApiClient().get(API().BASE_URL, API().SECONDARY_URL);
-
     Response response =
         await ApiClient().getData(API().BASE_URL + API().SECONDARY_URL);
 
