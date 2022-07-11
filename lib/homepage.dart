@@ -32,7 +32,7 @@ class _HomepageState extends State<Homepage> {
   OpenVPN engine = OpenVPN();
   VpnStatus? status;
   VPNStage? stage;
-  bool _granted = false;
+
   @override
   void initState() {
     engine.initialize(
@@ -111,7 +111,6 @@ class _HomepageState extends State<Homepage> {
 
     for (int i = 0; i < vpnListItems.length - 2; i++) {
       var counter = vpnListItems[i + 1];
-      List<VPNModel> vpnModelList = [];
       VPNModel vpnModel = VPNModel();
       double speed = (double.parse(counter[4]) / 1048576);
       // speed = speed.toStringAsFixed(2);
@@ -171,17 +170,14 @@ class _HomepageState extends State<Homepage> {
     // vpnList.forEach((x) => map[x.CountryLong] =
     //     map.containsKey(x.CountryLong) ? (1) : (map[x] + 1));
 
-    vpnList.forEach((e) {
+    for (var e in vpnList) {
       serverList.update(e.CountryLong, (x) => x + 1, ifAbsent: () => 1);
+    }
 
-      //  serverList.updateAll((key, value) => null)
-      // serverList[]
-      // serverList['flag'] = ;
-    });
+//  vpnList.forEach((e) {
+//       serverList.update(e.CountryLong, (x) => x + 1, ifAbsent: () => 1);
+//     });
 
-    // debugPrint(CountryLongmap.toString());
-    // debugPrint("entries: " + serverList.entries.toString());
-    // debugPrint("keys:" + serverList.keys.toString());
     debugPrint(serverList.toString());
   }
 
