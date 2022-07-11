@@ -14,7 +14,8 @@ class ApiClient {
 
     try {
       var response = await http.get(uri, headers: {
-        "Access-Control-Allow-Origin": "*"
+        // "Access-Control-Allow-Origin": "*",
+        "Accept": "*/*"
       }).timeout(const Duration(seconds: TIME_OUT_DURATION));
       return _processResponse(response);
     } on SocketException {
@@ -30,11 +31,12 @@ class ApiClient {
     var uri = Uri.parse(baseUrl);
     // print(uri);
     try {
-      var response = await http
-          .get(uri)
-          .timeout(const Duration(seconds: TIME_OUT_DURATION));
+      var response = await http.get(uri, headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Accept": "*/*"
+      }).timeout(const Duration(seconds: TIME_OUT_DURATION));
 
-      debugPrint(response.toString());
+      debugPrint(response.statusCode.toString());
       return _processResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection', uri.toString());
